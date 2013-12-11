@@ -1,36 +1,14 @@
+
+console.log("DEBUG: loading testTypeState.js");
 /*
- * This is a testType state object that developers can use to create new
- * step types.
- *
- * TODO: Copy this file and rename it to
- * 
- * <new step type>State.js
- * e.g. for example if you are creating a quiz step it would look
- * something like quizState.js
- *
- * and then put the new file into the new folder
- * you created for your new step type
- *
- * your new folder will look something like
- * vlewrapper/WebContent/vle/node/<new step type>/
- *
- * e.g. if you are creating a quiz step it would look something like
- * vlewrapper/WebContent/vle/node/quiz/
- * 
- * TODO: in this file, change all occurrences of the word 'TestTypeState' to
- * 
- * <new step type>State
- * e.g. for example if you are creating a quiz step it would look
- * something like QuizState
+ * This is a testType state object 
  */
 
 /**
  * This is the constructor for the state object that will be used to represent the
  * student work. An instance of this object will be created each time the student
  * submits an answer.
- * 
- * TODO: rename TestTypeState
- * 
+ *  * 
  * note: you can change the variables in this constructor, the response variable
  * is just used as an example. you can add any variables that will help you 
  * represent the student's work for your step type.
@@ -38,6 +16,7 @@
  * @constructor
  */
 function TestTypeState(response) {
+	console.log("DEBUG: entered constructor in testTypeState.js");
 	//the text response the student wrote
 	this.response = "";
 
@@ -52,7 +31,6 @@ function TestTypeState(response) {
  * The student work is retrieved and then this function is called to parse the student
  * work so that we can display the previous answer the student submitted.
  * 
- * TODO: rename TestTypeState
  * 
  * note: you can change the variables in the stateJSONObj, the response 
  * variable is just used as an example. you can add any variables that will  
@@ -62,12 +40,12 @@ function TestTypeState(response) {
  * @return a TestTypeState object
  */
 TestTypeState.prototype.parseDataJSONObj = function(stateJSONObj) {
+	console.log("DEBUG: entered parseDataJSONObj() in testTypeState.js");
 	//obtain the student work from the JSONObject
 	var response = stateJSONObj.response;
 	
 	/*
 	 * create a state object with the student work
-	 * TODO: rename TestTypeState
 	 */
 	var testTypeState = new TestTypeState(response);
 	
@@ -83,6 +61,7 @@ TestTypeState.prototype.parseDataJSONObj = function(stateJSONObj) {
  * @return the student work
  */
 TestTypeState.prototype.getStudentWork = function() {
+	console.log("DEBUG: entered getStudentWork() in testTypeState.js");
 	var studentWork = this;
 	
 	return studentWork;
@@ -90,6 +69,7 @@ TestTypeState.prototype.getStudentWork = function() {
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
-	//TODO: rename testType/testTypeState.js
+	console.log("DEBUG: adding scriptLoaded notice for testTypeState.js");
+	//note path
 	eventManager.fire('scriptLoaded', 'vle/node/testType/testTypeState.js');
 }
