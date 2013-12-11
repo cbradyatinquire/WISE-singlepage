@@ -1,41 +1,18 @@
 /*
- * This is a testType step object that developers can use to create new
- * step types.
- * 
- * TODO: Copy this file and rename it to
- * 
- * <new step type>.js
- * e.g. for example if you are creating a quiz step it would look
- * something like quiz.js
- *
- * and then put the new file into the new folder
- * you created for your new step type
- *
- * your new folder will look something like
- * vlewrapper/WebContent/vle/node/<new step type>/
- *
- * e.g. for example if you are creating a quiz step it would look something like
- * vlewrapper/WebContent/vle/node/quiz/
- * 
- * 
- * TODO: in this file, change all occurrences of the word 'TestType' to the
- * name of your new step type
- * 
- * <new step type>
- * e.g. for example if you are creating a quiz step it would look
- * something like Quiz
+ * This is a testType step object 
  */
-
+console.log("DEBUG:  loading testType.js");
 /**
  * This is the constructor for the object that will perform the logic for
  * the step when the students work on it. An instance of this object will
  * be created in the .html for this step (look at testType.html)
  * 
- * TODO: rename TestType
  * 
  * @constructor
  */
 function TestType(node) {
+	console.log("DEBUG:  entered TestType constructor in testType.js");
+	
 	this.node = node;
 	this.view = node.view;
 	this.content = node.getContent().getContentJSON();
@@ -53,15 +30,38 @@ function TestType(node) {
  * previous work the student has submitted when they previously worked on this
  * step, if any.
  * 
- * TODO: rename TestType
- * 
  * note: you do not have to use 'promptDiv' or 'studentResponseTextArea', they
  * are just provided as examples. you may create your own html ui elements in
  * the .html file for this step (look at testType.html).
  */
 TestType.prototype.render = function() {
+	console.log("DEBUG: entered function render in testType.js");
+	var ds = document.getElementById("draw_space");
+	var drawrandom = function( args ) {
+		ds = document.getElementById("draw_space");
+		var ctx = ds.getContext('2d');
+		//var xc = ds.width * Math.random();
+		//var yc = ds.height * Math.random();
+		//var xc2 = ds.width * Math.random();
+		//var yc2 = ds.height * Math.random();
+		ctx.beginPath();
+		ctx.moveTo(args.clientX - 3, args.clientY);
+		ctx.lineTo(args.clientX + 3, args.clientY);
+		ctx.moveTo(args.clientX , args.clientY - 3);
+		ctx.lineTo(args.clientX , args.clientY + 3);
+		ctx.lineWidth = 2;
+		ctx.stroke();
+		ctx.closePath();
+	}
 	//display any prompts to the student
 	$('#promptDiv').html(this.content.prompt);
+	
+	var ctx = ds.getContext('2d');
+	ctx.fillRect(50,50,50,50);
+	ctx.globalCompositeOperation = 'xor';
+	ctx.fillStyle = "#8833AA";
+	ctx.fillRect(75,75,50,50);
+	ds.addEventListener('mousemove', drawrandom, false);
 	
 	//load any previous responses the student submitted for this step
 	var latestState = this.getLatestState();
@@ -82,12 +82,11 @@ TestType.prototype.render = function() {
 /**
  * This function retrieves the latest student work
  * 
- * TODO: rename TestType
- * 
  * @return the latest state object or null if the student has never submitted
  * work for this step
  */
 TestType.prototype.getLatestState = function() {
+	console.log("DEBUG: entered function getLatestState() in testType.js");
 	var latestState = null;
 	
 	//check if the states array has any elements
@@ -103,15 +102,18 @@ TestType.prototype.getLatestState = function() {
  * This function retrieves the student work from the html ui, creates a state
  * object to represent the student work, and then saves the student work.
  * 
- * TODO: rename TestType
- * 
  * note: you do not have to use 'studentResponseTextArea', they are just 
  * provided as examples. you may create your own html ui elements in
  * the .html file for this step (look at testType.html).
  */
 TestType.prototype.save = function() {
+	console.log("DEBUG: entered function save() in testType.js");
 	//get the answer the student wrote
 	var response = $('#studentResponseTextArea').val();
+	var ds = document.getElementById("draw_space");
+	
+	var ctx = ds.getContext('2d');
+	var imagedata = ds.toDataURL();
 	
 	/*
 	 * create the student state that will store the new work the student
@@ -134,7 +136,7 @@ TestType.prototype.save = function() {
 	 * and in that file you would define QuizState and therefore
 	 * would change the TestTypeState to QuizState below
 	 */
-	var testTypeState = new TestTypeState(response);
+	var testTypeState = new TestTypeState(response, imagedata);
 	
 	/*
 	 * fire the event to push this state to the global view.states object.
@@ -149,6 +151,7 @@ TestType.prototype.save = function() {
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
+	console.log("DEBUG:  added scriptloaded event for testType.js to eventManager");
 	/*
 	 * TODO: rename testType to your new folder name
 	 * TODO: rename testType.js
