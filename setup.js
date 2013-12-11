@@ -1,20 +1,23 @@
+console.log("DEBUG:  loading setup.js...");
+
 var coreScripts = [
     /*
-     * TODO: rename testType
-     * TODO: rename TestTypeNode.js
-     * 
+ 	 * Note path. 
      * For example if you are creating a quiz node you would change it to
      * 'vle/node/quiz/QuizNode.js'
      */
 	'vle/node/testType/TestTypeNode.js',
 	/*
-     * TODO: rename testType
-     * TODO: rename testTypeEvents.js
      * 
      * For example if you are creating a quiz node you would change it to
      * 'vle/node/quiz/QuizEvents.js'
 	 */
-	'vle/node/testType/testTypeEvents.js'
+	'vle/node/testType/testTypeEvents.js',
+	/*
+	 * note: adding jquery version used elsewhere in the VLE
+	 */
+	scriptloader.jquerySrc,
+	scriptloader.jqueryUISrc
 ];
 
 var studentVLEScripts = [
@@ -29,9 +32,7 @@ var studentVLEScripts = [
 	 */
 	'vle/node/testType/testType.js',
 	/*
-     * TODO: rename testType
-     * TODO: rename testTypeState.js
-     * 
+     * NOTE PATH 
      * For example if you are creating a quiz node you would change it to
      * 'vle/node/quiz/quizState.js'
 	 */
@@ -40,9 +41,7 @@ var studentVLEScripts = [
 
 var authorScripts = [
 	/*
-	 * TODO: rename testType
-	 * TODO: rename authorview_testType.js
-	 * 
+	 * NOTE PATH:
 	 * For example if you are creating a quiz node you would change it to
 	 * 'vle/node/quiz/authorview_quiz.js'
 	 */
@@ -51,9 +50,7 @@ var authorScripts = [
 
 var gradingScripts = [
   	/*
-	 * TODO: rename testType
-	 * TODO: rename testTypeState.js
-	 * 
+	 * NOTE PATH:
 	 * For example if you are creating a quiz node you would change it to
 	 * 'vle/node/quiz/quizState.js'
 	 */
@@ -62,9 +59,7 @@ var gradingScripts = [
 
 var dependencies = [
   	/*
-	 * TODO: rename testType
-	 * TODO: rename TestTypeNode.js
-	 * 
+	 * NOTE PATH: 
 	 * For example if you are creating a quiz node you would change it to
 	 * 'vle/node/quiz/QuizNode.js'
 	 */
@@ -72,13 +67,13 @@ var dependencies = [
 ];
 
 /*
- * TODO: rename testType
+ * NOTE PATH
  * For example if you are creating a quiz node and you want to use custom icons,
  * you would change it to 'quiz' and replace the 'testType16.png' and 'testType28.png'
  * files in the node's 'icons' directory with 'quiz16.png' and 'quiz28.png' 
  * (the icons should be png files with 16x16 and 28x28 pixels respectively)
  * 
- * TODO: rename TestType
+ * NOTE
  * For example if you are creating a quiz node you would change it to
  * 'Quiz'
  * 
@@ -91,8 +86,7 @@ var nodeClasses = [
 ];
 
 /*
- * TODO: rename testType
- * TODO: rename TestTypeNode
+ * NOTE PATH
  */
 var nodeIconPath = 'node/testType/icons/';
 componentloader.addNodeIconPath('TestTypeNode', nodeIconPath);
@@ -101,7 +95,7 @@ scriptloader.addScriptToComponent('core', coreScripts);
 scriptloader.addScriptToComponent('core_min', coreScripts);
 
 /*
- * TODO: rename testType
+ * NOTE NAME
  * 
  * For example if you are creating a quiz node you would change it to
  * 'quiz'
@@ -115,7 +109,7 @@ scriptloader.addScriptToComponent('studentwork_min', gradingScripts);
 scriptloader.addDependencies(dependencies);
 
 /*
- * TODO: rename TestTypeNode
+ * NOTE NAME
  * 
  * For example if you are creating a quiz node you would change it to
  * 'QuizNode'
@@ -123,7 +117,7 @@ scriptloader.addDependencies(dependencies);
 componentloader.addNodeClasses('TestTypeNode', nodeClasses);
 
 /*
- * TODO: rename the file path value
+ * NOTE PATH
  * 
  * For example if you are creating a quiz node you would change it to
  * 'vle/node/quiz/quiz.css'
@@ -133,7 +127,7 @@ var css = [
 ];
 
 /*
- * TODO: rename testType
+ * NOTE NAME
  * 
  * For example if you are creating a quiz node you would change it to
  * 'quiz'
@@ -143,7 +137,7 @@ scriptloader.addCssToComponent('testType', css);
 var nodeTemplateParams = [
 	{
 		/*
-		 * TODO: rename the file path value
+		 * NOTE file path value
 		 * 
 		 * For example if you are creating a quiz node you would change it to
 		 * 'node/quiz/quizTestType.qz'
@@ -151,7 +145,7 @@ var nodeTemplateParams = [
 		nodeTemplateFilePath:'node/testType/testTypeTemplate.tt',
 		
 		/*
-		 * TODO: rename the extension value for your step type, the value of the
+		 * NOTE the extension value for your step type, the value of the
 		 * extension is up to you, we just use it to easily differentiate between
 		 * different step type files
 		 * 
@@ -163,8 +157,7 @@ var nodeTemplateParams = [
 ];
 
 /*
- * TODO: rename TestTypeNode
- * 
+ * NOTE NAME
  * For example if you are creating a quiz node you would change it to
  * 'QuizNode'
  */
@@ -172,8 +165,10 @@ componentloader.addNodeTemplateParams('TestTypeNode', nodeTemplateParams);
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
+	console.log("DEBUG:  sending notice to eventManager from setup.js...");
+	
 	/*
-	 * TODO: rename testType to your new folder name
+	 * NOTE PATH
 	 * 
 	 * For example if you were creating a quiz step it would look like
 	 * 
