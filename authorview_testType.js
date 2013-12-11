@@ -5,6 +5,7 @@
  * 
  * @constructor
  */
+console.log("DEBUG:  Loaded authorview js...");
 View.prototype.TestTypeNode = {};
 
 /*
@@ -30,9 +31,7 @@ View.prototype.TestTypeNode = {};
  * 'studentResponseBoxSizeContainer'
  * 'richTextEditorToggleContainer'
  * 'starterSentenceAuthoringContainer'
- * 
- * 
- * TODO: rename TestTypeNode
+ *  TODO: DECIDE WHETHER WE NEED TO USE 'COMMON COMPONENTS - assume NOT'
  */
 View.prototype.TestTypeNode.commonComponents = [];
 
@@ -45,13 +44,14 @@ View.prototype.TestTypeNode.commonComponents = [];
  * student will see. You will also need to populate the textarea with
  * the pre-existing prompt if the step has been authored before.
  * 
- * TODO: rename TestTypeNode
  */
 View.prototype.TestTypeNode.generatePage = function(view){
+	console.log("DEBUG:  entered 'generatePage() in authorview js...");
 	this.view = view;
 	
 	//get the content of the step
 	this.content = this.view.activeContent.getContentJSON();
+	console.log("DEBUG:  'activeContent' gotten via getContentJSON() is " + this.content);
 	
 	//get the html element that all the authoring components will be located
 	var parent = document.getElementById('dynamicParent');
@@ -67,7 +67,7 @@ View.prototype.TestTypeNode.generatePage = function(view){
 	var pageDiv = createElement(document, 'div', {id:'dynamicPage', style:'width:100%;height:100%'});
 	
 	//create the label for the textarea that the author will write the prompt in
-	var promptText = document.createTextNode("Prompt for Student:");
+	var promptText = document.createTextNode("Prompt for Student:  [to remove this]");
 	
 	/*
 	 * create the textarea that the author will write the prompt in
@@ -101,39 +101,36 @@ View.prototype.TestTypeNode.generatePage = function(view){
  * Get the array of common components which is an array with
  * string elements being the name of the common component
  * 
- * TODO: rename TestTypeNode
  */
 View.prototype.TestTypeNode.getCommonComponents = function() {
+	console.log("DEBUG:  entered 'getCommonComponents() in authorview js...");
 	return this.commonComponents;
 };
 
 /**
  * Updates this content object when requested, usually when preview is to be refreshed
- * 
- * TODO: rename TestTypeNode
  */
 View.prototype.TestTypeNode.updateContent = function(){
 	/* update content object */
+	console.log("DEBUG:  entered 'updateContent() in authorview js...");
 	this.view.activeContent.setContent(this.content);
 };
 
 /**
  * Populate the authoring textarea where the user types the prompt that
  * the student will read
- * 
- * TODO: rename TestTypeNode
  */
 View.prototype.TestTypeNode.populatePrompt = function() {
+	console.log("DEBUG:  entered 'populatePrompt() in authorview js...");
 	//get the prompt from the content and set it into the authoring textarea
 	$('#promptTextArea').val(this.content.prompt);
 };
 
 /**
  * Updates the content's prompt to match that of what the user input
- * 
- * TODO: rename TestTypeNode
  */
 View.prototype.TestTypeNode.updatePrompt = function(){
+	console.log("DEBUG:  entered 'updatePrompt() in authorview js...");
 	/* update content */
 	this.content.prompt = $('#promptTextArea').val();
 	
@@ -146,12 +143,10 @@ View.prototype.TestTypeNode.updatePrompt = function(){
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
 	/*
-	 * TODO: rename testType to your new folder name
-	 * TODO: rename authorview_testType
-	 * 
-	 * e.g. if you were creating a quiz step it would look like
+	 * note path:  e.g. if you were creating a quiz step it would look like
 	 * 
 	 * eventManager.fire('scriptLoaded', 'vle/node/quiz/authorview_quiz.js');
 	 */
+	console.log("DEBUG:  sending notice to eventManager from authorview js...");
 	eventManager.fire('scriptLoaded', 'vle/node/testType/authorview_testType.js');
 };
