@@ -1,17 +1,14 @@
-
+console.log("DEBUG: loaded testTypeEvents.js");
 /*
  * This handles events and calls the appropriate function to handle
  * the event.
  * 
- * TODO: rename testTypeDispatcher
- * For example if you are creating a quiz node you would change it to
- * quizDispatcher
  */
 View.prototype.testTypeDispatcher = function(type,args,obj){
+	console.log("DEBUG: entered function testTypeDispatcher in testTypeEvents.js");
 	/*
 	 * check to see if the event name matches 
 	 * 
-	 * TODO: rename testTypeUpdatePrompt
 	 * wait until you implement the authoring before you rename this
 	 */ 
 	if(type == 'testTypeUpdatePrompt') {
@@ -19,7 +16,6 @@ View.prototype.testTypeDispatcher = function(type,args,obj){
 		 * the event name matches so we will call the function that
 		 * handles that event
 		 * 
-		 * TODO: rename TestTypeNode
 		 * wait until you implement the authoring before you rename this 
 		 */
 		obj.TestTypeNode.updatePrompt();
@@ -33,7 +29,6 @@ View.prototype.testTypeDispatcher = function(type,args,obj){
  */
 var events = [
 	/*
-	 * TODO: rename testTypeUpdatePrompt
 	 * wait until you implement the authoring before you rename this
 	 */
 	'testTypeUpdatePrompt'
@@ -45,7 +40,6 @@ var events = [
  */
 for(var x=0; x<events.length; x++) {
 	/*
-	 * TODO: rename testTypeDispatcher
 	 * For example if you are creating a quiz node you would change it to
 	 * quizDispatcher. The name for the dispatcher should match the function
 	 * name at the top of this file.
@@ -55,9 +49,8 @@ for(var x=0; x<events.length; x++) {
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
+	console.log("DEBUG: added scriptloaded event for testTypeEvents.js");
 	/*
-	 * TODO: rename testType to your new folder name
-	 * TODO: rename testTypeEvents
 	 * 
 	 * e.g. if you were creating a quiz step it would look like
 	 * 
