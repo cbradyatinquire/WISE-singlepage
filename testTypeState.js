@@ -20,9 +20,9 @@ function TestTypeState(response, imagedata ) {
 	//the text response the student wrote
 	this.response = "";
 	this.imageData = "";
-	console.log(response);
-	console.log("and image data");
-	console.log(imagedata);
+//	console.log(response);
+//	console.log("and image data");
+//	console.log(imagedata);
 
 	if(response != null) {
 		//set the response

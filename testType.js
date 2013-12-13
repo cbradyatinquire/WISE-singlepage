@@ -22,6 +22,15 @@ function TestType(node) {
 	} else {
 		this.states = [];  
 	};
+	
+	this.api = {
+		"version":0.1
+	};
+	
+	this.api.triggerSaveState = function(  ) { save(); };
+	this.api.appReady = function() { alert("app tells us it's ready"); };
+	console.log(this.api);
+	
 };
 
 /**
@@ -38,7 +47,6 @@ TestType.prototype.render = function() {
 	console.log("DEBUG: entered function render in testType.js");
 	
 	var lsInfo = document.getElementById("levelstring_info");
-	console.log("???????????????????dumping this.content");
 	var levelJ = this.content.levelJSON;
 	var toPrint = "==========THE LEVEL JSON===========<br>";
 	toPrint += "Level is <b>" + levelJ.Level + "</b><br>";
@@ -46,69 +54,25 @@ TestType.prototype.render = function() {
 	toPrint += "====================================";
 	lsInfo.innerHTML=toPrint;
 	
-	var ds = document.getElementById("draw_space");
-	var drawrandom = function( args ) {
-		
-		var mouseX, mouseY;
+	var iframe = document.getElementById("ouriframe");
+	iframe.src = "assets/" + this.content.url;
+	
 
-		    if(args.offsetX) {
-		        mouseX = args.offsetX;
-		        mouseY = args.offsetY;
-		    }
-		    else if(args.layerX) {
-		        mouseX = args.layerX;
-		        mouseY = args.layerY;
-		    }
-		
-		ds = document.getElementById("draw_space");
-		var ctx = ds.getContext('2d');
-		//var xc = ds.width * Math.random();
-		//var yc = ds.height * Math.random();
-		//var xc2 = ds.width * Math.random();
-		//var yc2 = ds.height * Math.random();
-		ctx.beginPath();
-		//console.log(args);
-		ctx.moveTo(mouseX - 3, mouseY);
-		ctx.lineTo(mouseX + 3, mouseY);
-		ctx.moveTo(mouseX , mouseY - 3);
-		ctx.lineTo(mouseX , mouseY + 3);
-		ctx.lineWidth = 2;
-		ctx.stroke();
-		ctx.closePath();
-	}
-	//display any prompts to the student
 	document.getElementById('promptDiv').innerHTML=this.content.prompt;
 	
-	var ctx = ds.getContext('2d');
-	ctx.fillRect(50,50,50,50);
-	//ctx.globalCompositeOperation = 'xor';
-	ctx.fillStyle = "#8833AA";
-	ctx.fillRect(75,75,50,50);
-	ds.addEventListener('mousemove', drawrandom, false);
-	
+
 	//load any previous responses the student submitted for this step
 	var latestState = this.getLatestState();
 	
-	console.log("latest state");
-	console.log(latestState);
-	if(latestState != null) {
-		/*
-		 * get the response from the latest state. the response variable is
-		 * just provided as an example. you may use whatever variables you
-		 * would like from the state object (look at testTypeState.js)
-		 */
-		var latestResponse = latestState.response;
-		console.log("text based response is ");
-		console.log(latestResponse);
-		//set the previous student work into the text area
-		document.getElementById('studentResponseTextArea').value = latestResponse; 
-		
-		var latestImage = new Image();
-		latestImage.src = latestState.imageData;
-		console.log("!!!!!!!!!!!!!!!!!drawing");
-		console.log(latestImage);
-		ctx.drawImage(latestImage, 0, 0);
-	}
+	var latestResponse = latestState.response;
+	console.log("text based response is ");
+	console.log(latestResponse);
+	//set the previous student work into the text area
+	document.getElementById('studentResponseTextArea').value = latestResponse; 
+	
+	
+	this.api.getLatestState = function() { return latestState; }
+	
 };
 
 /**
@@ -143,10 +107,7 @@ TestType.prototype.save = function() {
 	//get the answer the student wrote
 	var response = document.getElementById('studentResponseTextArea').value;
 	
-	var ds = document.getElementById("draw_space");
-	
-	var ctx = ds.getContext('2d');
-	var imagedata = ds.toDataURL();
+	var imagedata = document.getElementById("ouriframe").contentWindow.provideSavedState();
 	console.log("DEBUG:  Image data=" + imagedata);
 	
 	/*

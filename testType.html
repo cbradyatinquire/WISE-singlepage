@@ -1,14 +1,29 @@
 <html>
 	<head>
 		<script type="text/javascript">
-		
+			var hello = function() { alert("hiya"); };
 			var testType;
+			
+			function apiToGetLatestState() {
+				console.log( testType.api );
+				return testType.api.getLatestState();
+			}
+			
+			function apiAppReady() {
+				console.log( testType.api );
+				testType.api.appReady();
+			}
+			
+			function apiTriggerSaveState( stateobj ) {
+				console.log( testType.api );
+				testType.api.triggerSaveState( stateobj );
+			}
 		
 			function loadContentAfterScriptsLoad(node) {
 				/*
 				*NOTE NAME
 				 */
-				console.log("DEBUG:  loading html page");
+				console.log("DEBUG:  loading html page**#**#*#**#*#**#*#**#**#");
 	        	testType = new TestType(node);
 	        	testType.render();
 	        };
@@ -64,9 +79,9 @@
 			 you may delete all of these divs and create the body however you like -->
 		<div id='promptDiv'></div>
 		<div id="levelstring_info"></div>
-		<div><canvas id="draw_space" width="550" height="300" draggable="false"></canvas></div>
-		<input type="button" value="testresponse" onclick="alert('heard you')"></input>
+		<iframe id="ouriframe" width="480" height="350" seamless></iframe>
+		
 		<div id='responseDiv'><textarea id='studentResponseTextArea' rows='8' cols='80'></textarea></div>
-		<div id='saveButtonDiv'><input type='button' value='Save' onclick='save()'></input></div>
+		
 	</body>
 </html>
