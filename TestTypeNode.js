@@ -150,6 +150,8 @@ TestTypeNode.prototype.renderGradingView = function(displayStudentWorkDiv, nodeV
 	 * 
 	 * e.g. if you are creating a quiz step you would change it to quizState
 	 */
+	console.log("dig into this");
+	console.log(nodeVisit);
 	var testTypeState = nodeVisit.getLatestWork();
 	
 	/*
@@ -164,12 +166,14 @@ TestTypeNode.prototype.renderGradingView = function(displayStudentWorkDiv, nodeV
 	 * changed in the previous line above
 	 */
 	var studentWork = testTypeState.getStudentWork();
-	
+	console.log(studentWork);
 	//put the HTML representation of the student work into the div provided
-	var thehtml = "response object: " + studentWork.response + "<br>just any image: <img src='http://localhost:8080/vlewrapper/vle/node/jstest/icons/jstest28.png'>";
-	thehtml += "<br>snapshot of the canvas's state: <img src='"+studentWork.imageData+"'>";
+	var thehtml = "response object: " + studentWork.response + "<br>";
+	thehtml += "There were " + (nodeVisit.nodeStates.length - 1) + " intermediate-save states...<br>";
+	thehtml += "...and here is the final snapshot of the canvas's state: <img src='"+studentWork.imageData+"'>";
 	//$(divId.selector).html(thehtml);
 	
+	console.log(displayStudentWorkDiv);
 	//put the student work into the div
 	displayStudentWorkDiv.html(thehtml); //studentWork.response);
 };

@@ -15,14 +15,21 @@ console.log("DEBUG: loading testTypeState.js");
  * 
  * @constructor
  */
-function TestTypeState(response) {
+function TestTypeState(response, imagedata ) {
 	console.log("DEBUG: entered constructor in testTypeState.js");
 	//the text response the student wrote
 	this.response = "";
+	this.imageData = "";
+	console.log(response);
+	console.log("and image data");
+	console.log(imagedata);
 
 	if(response != null) {
 		//set the response
 		this.response = response;
+	}
+	if(imagedata != null) {
+		this.imageData = imagedata;
 	}
 };
 
@@ -43,11 +50,11 @@ TestTypeState.prototype.parseDataJSONObj = function(stateJSONObj) {
 	console.log("DEBUG: entered parseDataJSONObj() in testTypeState.js");
 	//obtain the student work from the JSONObject
 	var response = stateJSONObj.response;
-	
+	var imagedata = stateJSONObj.imageData;
 	/*
 	 * create a state object with the student work
 	 */
-	var testTypeState = new TestTypeState(response);
+	var testTypeState = new TestTypeState(response, imagedata);
 	
 	//return the state object
 	return testTypeState;

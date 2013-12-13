@@ -16,13 +16,13 @@ var coreScripts = [
 	/*
 	 * note: adding jquery version used elsewhere in the VLE
 	 */
-	scriptloader.jquerySrc,
-	scriptloader.jqueryUISrc
+	//scriptloader.jquerySrc,
+	//scriptloader.jqueryUISrc
 ];
 
 var studentVLEScripts = [
-	scriptloader.jquerySrc,
-	scriptloader.jqueryUISrc,
+/*	scriptloader.jquerySrc,
+	scriptloader.jqueryUISrc,*/
  	/*
      * TODO: rename testType
      * TODO: rename testType.js

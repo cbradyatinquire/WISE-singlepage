@@ -36,8 +36,30 @@ function TestType(node) {
  */
 TestType.prototype.render = function() {
 	console.log("DEBUG: entered function render in testType.js");
+	
+	var lsInfo = document.getElementById("levelstring_info");
+	console.log("???????????????????dumping this.content");
+	var levelJ = this.content.levelJSON;
+	var toPrint = "==========THE LEVEL JSON===========<br>";
+	toPrint += "Level is <b>" + levelJ.Level + "</b><br>";
+	toPrint += "Stakes are <b>" + levelJ.Stakes + "</b><br>";
+	toPrint += "====================================";
+	lsInfo.innerHTML=toPrint;
+	
 	var ds = document.getElementById("draw_space");
 	var drawrandom = function( args ) {
+		
+		var mouseX, mouseY;
+
+		    if(args.offsetX) {
+		        mouseX = args.offsetX;
+		        mouseY = args.offsetY;
+		    }
+		    else if(args.layerX) {
+		        mouseX = args.layerX;
+		        mouseY = args.layerY;
+		    }
+		
 		ds = document.getElementById("draw_space");
 		var ctx = ds.getContext('2d');
 		//var xc = ds.width * Math.random();
@@ -45,20 +67,21 @@ TestType.prototype.render = function() {
 		//var xc2 = ds.width * Math.random();
 		//var yc2 = ds.height * Math.random();
 		ctx.beginPath();
-		ctx.moveTo(args.clientX - 3, args.clientY);
-		ctx.lineTo(args.clientX + 3, args.clientY);
-		ctx.moveTo(args.clientX , args.clientY - 3);
-		ctx.lineTo(args.clientX , args.clientY + 3);
+		//console.log(args);
+		ctx.moveTo(mouseX - 3, mouseY);
+		ctx.lineTo(mouseX + 3, mouseY);
+		ctx.moveTo(mouseX , mouseY - 3);
+		ctx.lineTo(mouseX , mouseY + 3);
 		ctx.lineWidth = 2;
 		ctx.stroke();
 		ctx.closePath();
 	}
 	//display any prompts to the student
-	$('#promptDiv').html(this.content.prompt);
+	document.getElementById('promptDiv').innerHTML=this.content.prompt;
 	
 	var ctx = ds.getContext('2d');
 	ctx.fillRect(50,50,50,50);
-	ctx.globalCompositeOperation = 'xor';
+	//ctx.globalCompositeOperation = 'xor';
 	ctx.fillStyle = "#8833AA";
 	ctx.fillRect(75,75,50,50);
 	ds.addEventListener('mousemove', drawrandom, false);
@@ -66,6 +89,8 @@ TestType.prototype.render = function() {
 	//load any previous responses the student submitted for this step
 	var latestState = this.getLatestState();
 	
+	console.log("latest state");
+	console.log(latestState);
 	if(latestState != null) {
 		/*
 		 * get the response from the latest state. the response variable is
@@ -73,9 +98,16 @@ TestType.prototype.render = function() {
 		 * would like from the state object (look at testTypeState.js)
 		 */
 		var latestResponse = latestState.response;
-		
+		console.log("text based response is ");
+		console.log(latestResponse);
 		//set the previous student work into the text area
-		$('#studentResponseTextArea').val(latestResponse); 
+		document.getElementById('studentResponseTextArea').value = latestResponse; 
+		
+		var latestImage = new Image();
+		latestImage.src = latestState.imageData;
+		console.log("!!!!!!!!!!!!!!!!!drawing");
+		console.log(latestImage);
+		ctx.drawImage(latestImage, 0, 0);
 	}
 };
 
@@ -88,7 +120,7 @@ TestType.prototype.render = function() {
 TestType.prototype.getLatestState = function() {
 	console.log("DEBUG: entered function getLatestState() in testType.js");
 	var latestState = null;
-	
+	console.log("there are " + this.states.length + " states");
 	//check if the states array has any elements
 	if(this.states != null && this.states.length > 0) {
 		//get the last state
@@ -109,11 +141,13 @@ TestType.prototype.getLatestState = function() {
 TestType.prototype.save = function() {
 	console.log("DEBUG: entered function save() in testType.js");
 	//get the answer the student wrote
-	var response = $('#studentResponseTextArea').val();
+	var response = document.getElementById('studentResponseTextArea').value;
+	
 	var ds = document.getElementById("draw_space");
 	
 	var ctx = ds.getContext('2d');
 	var imagedata = ds.toDataURL();
+	console.log("DEBUG:  Image data=" + imagedata);
 	
 	/*
 	 * create the student state that will store the new work the student
@@ -137,7 +171,7 @@ TestType.prototype.save = function() {
 	 * would change the TestTypeState to QuizState below
 	 */
 	var testTypeState = new TestTypeState(response, imagedata);
-	
+	console.log(testTypeState);
 	/*
 	 * fire the event to push this state to the global view.states object.
 	 * the student work is saved to the server once they move on to the
@@ -147,6 +181,8 @@ TestType.prototype.save = function() {
 
 	//push the state object into this or object's own copy of states
 	this.states.push(testTypeState);
+	console.log(this.states);
+	console.log("there are " + this.states.length + " states");
 };
 
 //used to notify scriptloader that this script has finished loading
