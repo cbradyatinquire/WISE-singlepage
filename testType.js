@@ -28,8 +28,7 @@ function TestType(node) {
 	};
 	
 	this.api.triggerSaveState = function(  ) { save(); };
-	this.api.appReady = function() { alert("app tells us it's ready"); };
-	console.log(this.api);
+	this.api.appReady = function() { console.log("app tells us it's ready"); };
 	
 };
 
@@ -55,7 +54,9 @@ TestType.prototype.render = function() {
 	lsInfo.innerHTML=toPrint;
 	
 	var iframe = document.getElementById("ouriframe");
-	iframe.src = "assets/" + this.content.url;
+	var mypath = this.view.config.getConfigParam("getContentBaseUrl") + "assets/";  //or url
+	
+	iframe.src = mypath + this.content.url;
 	
 
 	document.getElementById('promptDiv').innerHTML=this.content.prompt;
@@ -70,7 +71,7 @@ TestType.prototype.render = function() {
 	//set the previous student work into the text area
 	document.getElementById('studentResponseTextArea').value = latestResponse; 
 	
-	
+	console.log("setting up getlatest state");
 	this.api.getLatestState = function() { return latestState; }
 	
 };

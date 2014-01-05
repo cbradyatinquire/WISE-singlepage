@@ -2,22 +2,38 @@
 	<head>
 		<script type="text/javascript">
 			var hello = function() { alert("hiya"); };
-			var testType;
+			//var testType;
 			
-			function apiToGetLatestState() {
-				console.log( testType.api );
+			function wiseAPI() {
+				if ( !(testType.api) ) {
+					console.log("NULL API OBJECT -- SHOULD NEVER HAPPEN");
+				}
+				return testType.api;
+			}
+			
+			function apiGetLatestState() {
+				console.log("SHOULDNT USE apiGetLatestState()");
 				return testType.api.getLatestState();
 			}
 			
 			function apiAppReady() {
-				console.log( testType.api );
+				console.log("SHOULDNT USE apiAppReady()");
 				testType.api.appReady();
 			}
 			
 			function apiTriggerSaveState( stateobj ) {
-				console.log( testType.api );
+				console.log("SHOULDNT USE apiTriggerSaveState()");
 				testType.api.triggerSaveState( stateobj );
 			}
+			
+			function loadAPI() {
+				//iframe.api = testType.api;
+				console.log("attempting to set API to ");
+				console.log(testType.api);
+				document.getElementById("ouriframe").api = testType.api;
+				console.log("now it is");
+				console.log(document.getElementById("ouriframe").api);
+		    }
 		
 			function loadContentAfterScriptsLoad(node) {
 				/*
@@ -25,7 +41,11 @@
 				 */
 				console.log("DEBUG:  loading html page**#**#*#**#*#**#*#**#**#");
 	        	testType = new TestType(node);
+	
+				loadAPI();
 	        	testType.render();
+				console.log("AFTER render, the api object is... ");
+				console.log(document.getElementById("ouriframe").api);
 	        };
 			
 	        function loadContent(node) {
