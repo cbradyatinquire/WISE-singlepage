@@ -1,9 +1,7 @@
 <html>
 	<head>
 		<script type="text/javascript">
-			var hello = function() { alert("hiya"); };
-			//var testType;
-			
+		
 			function wiseAPI() {
 				if ( !(testType.api) ) {
 					console.log("NULL API OBJECT -- SHOULD NEVER HAPPEN");
@@ -36,16 +34,10 @@
 		    }*/
 		
 			function loadContentAfterScriptsLoad(node) {
-				/*
-				*NOTE NAME
-				 */
 				console.log("DEBUG:  loading html page**#**#*#**#*#**#*#**#**#");
 	        	testType = new TestType(node);
 	
-			//	loadAPI();
 	        	testType.render();
-			//	console.log("AFTER render, the api object is... ");
-			//	console.log(document.getElementById("ouriframe").api);
 	        };
 			
 	        function loadContent(node) {
@@ -66,7 +58,7 @@
 		         * 'testType' to 'quiz'
 		         */
 
-				//added by corey
+				//NOTE:  added by corey --> WISE issue.
 				console.log("DEBUG:  about to dump 'this' variable from html file.");
 				console.log(this);
 				console.log("DEBUG:  About to call scriptloader in html file. Will test existence first.  if fails try to reassign");
@@ -74,7 +66,7 @@
 					console.log("reassigning scriptloader variable!");
 					scriptloader = this.scriptloader;
 				}
-				//end added 
+				//end added code...
 	        	scriptloader.loadScripts('testType', document, node.id, eventManager);
 	        };
 

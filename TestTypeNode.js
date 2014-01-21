@@ -34,7 +34,7 @@ TestTypeNode.authoringToolName = "TestType";
  * will be seen by the author when they add a new step to their project to help
  * them understand what kind of step this is
  */
-TestTypeNode.authoringToolDescription = "This is a generic step only used by developers";
+TestTypeNode.authoringToolDescription = "Heading toward a Single-Page WebApp step";
 
 /**
  * This is the constructor for the Node
@@ -150,7 +150,8 @@ TestTypeNode.prototype.renderGradingView = function(displayStudentWorkDiv, nodeV
 	 * 
 	 * e.g. if you are creating a quiz step you would change it to quizState
 	 */
-	console.log("dig into this");
+	//TODO: possible API EXTENSION HERE --> HOW TO GIVE THE WEBAPP THE ABILITY TO produce a REPORT, if, as with SURGE, it's not document-like
+	console.log("do some instance-specific analysis on the whole set of prior work for this step.");
 	console.log(nodeVisit);
 	var testTypeState = nodeVisit.getLatestWork();
 	
@@ -162,20 +163,15 @@ TestTypeNode.prototype.renderGradingView = function(displayStudentWorkDiv, nodeV
 	 */
 	var stepWorkId = nodeVisit.id;
 	
-	/*
-	 * changed in the previous line above
-	 */
 	var studentWork = testTypeState.getStudentWork();
 	console.log(studentWork);
-	//put the HTML representation of the student work into the div provided
+	//put the HTML representation of the student work into the div provided -- proof of concept here...
 	var thehtml = "response object: " + studentWork.response + "<br>";
 	thehtml += "There were " + (nodeVisit.nodeStates.length - 1) + " intermediate-save states...<br>";
 	thehtml += "...and here is a representation of the latest state: <br>"+studentWork.gradingViewHTML;
-	//$(divId.selector).html(thehtml);
 	
-	console.log(displayStudentWorkDiv);
 	//put the student work into the div
-	displayStudentWorkDiv.html(thehtml); //studentWork.response);
+	displayStudentWorkDiv.html(thehtml); 
 };
 
 /**

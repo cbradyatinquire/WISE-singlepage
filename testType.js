@@ -78,10 +78,11 @@ TestType.prototype.render = function() {
 	//set the previous student work into the text area
 	document.getElementById('studentResponseTextArea').value = latestResponse; 
 	
-	console.log("setting up getlatest state");
+	console.log("setting up getLatestState......");
 	this.api.getLatestState = function() { console.log("using api's getLatestState"); return latestState; }
-	console.log("it is expected to return " + latestState);
+	console.log(".....it is expected to return " + latestState);
 	
+	//NOTE: I do this last in proof of concept to detect if there were any surprise crashes in the above 
 	iframe.src = mypath + this.content.url;
 };
 
@@ -101,10 +102,11 @@ TestType.prototype.getLatestState = function() {
 		console.log("there are " + this.states.length + " states");
 		latestState = this.states[this.states.length - 1];
 	} else {
-		console.log("******There are NO prior states; loading initial state if it exists");
+		console.log("******There are NO prior states; loading initialState from the authored JSON, if it exists");
 		var statestr = this.content.initialState;
 		
-		if ( statestr ) {
+		if ( statestr ) {  
+			//it might be a JSON object itself... (that or a string)
 			if ((typeof statestr) == 'object') {
 				statestr = JSON.stringify(statestr);
 			}

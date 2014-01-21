@@ -63,6 +63,7 @@ TestTypeState.prototype.parseDataJSONObj = function(stateJSONObj) {
 
 /**
  * Get the student work for display purposes such as in the grading tool.
+ * [I AM NOT SURE WHAT THIS FUNCTION SHOULD DO -- bizarre as it stands]
  * 
  * @return the student work
  */
