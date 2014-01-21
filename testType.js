@@ -47,16 +47,21 @@ TestType.prototype.render = function() {
 	
 	var lsInfo = document.getElementById("levelstring_info");
 	var levelJ = this.content.levelJSON;
-	var toPrint = "==========THE LEVEL JSON===========<br>";
-	toPrint += "Level is <b>" + levelJ.Level + "</b><br>";
-	toPrint += "Stakes are <b>" + levelJ.Stakes + "</b><br>";
-	toPrint += "====================================";
-	lsInfo.innerHTML=toPrint;
+	if ( levelJ ) {
+		var toPrint = "==========THE LEVEL JSON===========<br>";
+		toPrint += "Level is <b>" + levelJ.Level + "</b><br>";
+		toPrint += "Stakes are <b>" + levelJ.Stakes + "</b><br>";
+		toPrint += "====================================";
+	}
+	//lsInfo.innerHTML=toPrint;
 	
 	var iframe = document.getElementById("ouriframe");
+	console.log("SETTING THE HEIGHT TO " + this.content.height + " and the WIDTH to " + this.content.width);
+	iframe.width = this.content.width;
+	iframe.height = this.content.height;
 	var mypath = this.view.config.getConfigParam("getContentBaseUrl") + "assets/";  //or url
 	
-	iframe.src = mypath + this.content.url;
+//	iframe.src = mypath + this.content.url;
 	
 
 	document.getElementById('promptDiv').innerHTML=this.content.prompt;
@@ -64,16 +69,20 @@ TestType.prototype.render = function() {
 
 	//load any previous responses the student submitted for this step
 	var latestState = this.getLatestState();
-	
-	var latestResponse = latestState.response;
+	var latestResponse = "";
+	if (latestState) { 
+		var latestResponse = latestState.response;
+	}
 	console.log("text based response is ");
 	console.log(latestResponse);
 	//set the previous student work into the text area
 	document.getElementById('studentResponseTextArea').value = latestResponse; 
 	
 	console.log("setting up getlatest state");
-	this.api.getLatestState = function() { return latestState; }
+	this.api.getLatestState = function() { console.log("using api's getLatestState"); return latestState; }
+	console.log("it is expected to return " + latestState);
 	
+	iframe.src = mypath + this.content.url;
 };
 
 /**
@@ -85,11 +94,23 @@ TestType.prototype.render = function() {
 TestType.prototype.getLatestState = function() {
 	console.log("DEBUG: entered function getLatestState() in testType.js");
 	var latestState = null;
-	console.log("there are " + this.states.length + " states");
+	
 	//check if the states array has any elements
 	if(this.states != null && this.states.length > 0) {
 		//get the last state
+		console.log("there are " + this.states.length + " states");
 		latestState = this.states[this.states.length - 1];
+	} else {
+		console.log("******There are NO prior states; loading initial state if it exists");
+		var statestr = this.content.initialState;
+		
+		if ( statestr ) {
+			if ((typeof statestr) == 'object') {
+				statestr = JSON.stringify(statestr);
+			}
+			console.log("going to load ... " + statestr);
+			latestState = new TestTypeState("",statestr,"");
+		}
 	}
 	
 	return latestState;
@@ -108,43 +129,53 @@ TestType.prototype.save = function() {
 	//get the answer the student wrote
 	var response = document.getElementById('studentResponseTextArea').value;
 	
-	var imagedata = document.getElementById("ouriframe").contentWindow.provideSavedState();
-	console.log("DEBUG:  Image data=" + imagedata);
+	var stateGetter = document.getElementById("ouriframe").contentWindow.provideStateString;
+	var gradingHTMLGetter = document.getElementById("ouriframe").contentWindow.provideGradingViewHTML
 	
-	/*
-	 * create the student state that will store the new work the student
-	 * just submitted
-	 * 
-	 * TODO: rename TestTypeState
-	 * 
-	 * make sure you rename TestTypeState to the state object type
-	 * that you will use for representing student data for this
-	 * type of step. copy and modify the file below
-	 * 
-	 * vlewrapper/WebContent/vle/node/testType/testTypeState.js
-	 * 
-	 * and use the object defined in your new state.js file instead
-	 * of TestTypeState. for example if you are creating a new
-	 * quiz step type you would copy the file above to
-	 * 
-	 * vlewrapper/WebContent/vle/node/quiz/quizState.js
-	 * 
-	 * and in that file you would define QuizState and therefore
-	 * would change the TestTypeState to QuizState below
-	 */
-	var testTypeState = new TestTypeState(response, imagedata);
-	console.log(testTypeState);
-	/*
-	 * fire the event to push this state to the global view.states object.
-	 * the student work is saved to the server once they move on to the
-	 * next step.
-	 */
-	this.view.pushStudentWork(this.node.id, testTypeState);
+	if ( stateGetter && gradingHTMLGetter ) {
+		var statestring = document.getElementById("ouriframe").contentWindow.provideStateString();
+		var gradingHTML = document.getElementById("ouriframe").contentWindow.provideGradingViewHTML();
+	
+		console.log("DEBUG:  grading view HTML=" + gradingHTML);
+		console.log("DEBUG:  State string data=" + statestring);
+		console.log("DEBUG:  response data = " + response);
+	
+		/*
+		 * create the student state that will store the new work the student
+		 * just submitted
+		 * 
+		 * TODO: rename TestTypeState
+		 * 
+		 * make sure you rename TestTypeState to the state object type
+		 * that you will use for representing student data for this
+		 * type of step. copy and modify the file below
+		 * 
+		 * vlewrapper/WebContent/vle/node/testType/testTypeState.js
+		 * 
+		 * and use the object defined in your new state.js file instead
+		 * of TestTypeState. for example if you are creating a new
+		 * quiz step type you would copy the file above to
+		 * 
+		 * vlewrapper/WebContent/vle/node/quiz/quizState.js
+		 * 
+		 * and in that file you would define QuizState and therefore
+		 * would change the TestTypeState to QuizState below
+		 */
+	
+		var testTypeState = new TestTypeState(response, statestring, gradingHTML);
+		console.log(testTypeState);
+		/*
+		 * fire the event to push this state to the global view.states object.
+		 * the student work is saved to the server once they move on to the
+		 * next step.
+		 */
+		this.view.pushStudentWork(this.node.id, testTypeState);
 
-	//push the state object into this or object's own copy of states
-	this.states.push(testTypeState);
-	console.log(this.states);
-	console.log("there are " + this.states.length + " states");
+		//push the state object into this or object's own copy of states
+		this.states.push(testTypeState);
+		console.log(this.states);
+		console.log("there are " + this.states.length + " states");
+	}
 };
 
 //used to notify scriptloader that this script has finished loading

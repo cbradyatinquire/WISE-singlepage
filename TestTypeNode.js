@@ -170,7 +170,7 @@ TestTypeNode.prototype.renderGradingView = function(displayStudentWorkDiv, nodeV
 	//put the HTML representation of the student work into the div provided
 	var thehtml = "response object: " + studentWork.response + "<br>";
 	thehtml += "There were " + (nodeVisit.nodeStates.length - 1) + " intermediate-save states...<br>";
-	thehtml += "...and here is the final snapshot of the canvas's state: <img src='"+studentWork.imageData+"'>";
+	thehtml += "...and here is a representation of the latest state: <br>"+studentWork.gradingViewHTML;
 	//$(divId.selector).html(thehtml);
 	
 	console.log(displayStudentWorkDiv);
